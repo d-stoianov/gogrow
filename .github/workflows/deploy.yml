@@ -4,6 +4,9 @@ on:
     push:
         branches:
             - main
+        paths:
+            - 'server/**'
+            - '.github/workflows/deploy.yml'
 
 jobs:
     lint:
@@ -19,6 +22,7 @@ jobs:
                   node-version: '22'
 
             - name: Install dependencies and run linter
+              working-directory: server
               run: |
                   npm ci
                   npm run lint
@@ -37,10 +41,11 @@ jobs:
                   node-version: '20'
 
             - name: Build and Package Application
+              working-directory: server
               run: |
                   npm ci
                   npm run build
-                  tar czf ../app.tar.gz .
+                  tar czf ../../app.tar.gz .
 
             - name: Copy Package to VPS
               env:

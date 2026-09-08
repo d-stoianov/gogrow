@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://b5cu81k3ji7ck"]
+
+[ext_resource type="Script" uid="uid://cogmsatf3724r" path="res://world.gd" id="1_tlwt5"]
+[ext_resource type="Script" uid="uid://cdpftquo0fw64" path="res://player.gd" id="2_aqk2v"]
+[ext_resource type="Texture2D" uid="uid://dkt5gpalhelcj" path="res://icon.svg" id="3_036b0"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e2o6t"]
+radius = 32.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tlwt5"]
+size = Vector2(800, 900)
+
+[node name="World" type="Node2D"]
+process_mode = 1
+script = ExtResource("1_tlwt5")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(388, 369)
+script = ExtResource("2_aqk2v")
+
+[node name="BodySprite" type="Sprite2D" parent="Player"]
+texture = ExtResource("3_036b0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CircleShape2D_e2o6t")
+
+[node name="Walls" type="StaticBody2D" parent="."]
+
+[node name="East" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1200, 450)
+shape = SubResource("RectangleShape2D_tlwt5")
+
+[node name="North" type="CollisionShape2D" parent="Walls"]
+position = Vector2(400, -450)
+shape = SubResource("RectangleShape2D_tlwt5")
+
+[node name="West" type="CollisionShape2D" parent="Walls"]
+position = Vector2(-400, 450)
+shape = SubResource("RectangleShape2D_tlwt5")
+
+[node name="West2" type="CollisionShape2D" parent="Walls"]
+position = Vector2(400, 1350)
+shape = SubResource("RectangleShape2D_tlwt5")

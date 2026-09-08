@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8c56cx0pccdp"]
+
+[ext_resource type="Script" uid="uid://c5o2dytlj7qfr" path="res://game.gd" id="1_80nbo"]
+[ext_resource type="PackedScene" uid="uid://b5cu81k3ji7ck" path="res://world.tscn" id="2_feb5d"]
+[ext_resource type="Script" uid="uid://cyagpd1w1xw2h" path="res://menu.gd" id="4_fc0e3"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_80nbo")
+
+[node name="World" parent="." instance=ExtResource("2_feb5d")]
+unique_name_in_owner = true
+is_remote = false
+
+[node name="RemoteWorld" parent="." instance=ExtResource("2_feb5d")]
+unique_name_in_owner = true
+visible = false
+position = Vector2(800, 0)
+
+[node name="SocketTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Menu" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_fc0e3")
+
+[node name="ConnectionContainer" type="CenterContainer" parent="CanvasLayer/Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Menu/ConnectionContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="SessionIdText" type="TextEdit" parent="CanvasLayer/Menu/ConnectionContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 86)
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+placeholder_text = "Session ID"
+
+[node name="ConnectButton" type="Button" parent="CanvasLayer/Menu/ConnectionContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+disabled = true
+text = "Create Session"
+
+[connection signal="timeout" from="SocketTimer" to="." method="_on_socket_timer_timeout"]
+[connection signal="session_connect" from="CanvasLayer/Menu" to="." method="_on_menu_session_connect"]
+[connection signal="text_changed" from="CanvasLayer/Menu/ConnectionContainer/VBoxContainer/SessionIdText" to="CanvasLayer/Menu" method="_on_session_id_text_text_changed"]
+[connection signal="pressed" from="CanvasLayer/Menu/ConnectionContainer/VBoxContainer/ConnectButton" to="CanvasLayer/Menu" method="_on_connect_button_pressed"]
