@@ -1,7 +1,3 @@
-import * as dotenv from 'dotenv'
-
-dotenv.config()
-
-const PORT = parseInt(process.env.PORT ?? '8080')
+const PORT = parseInt(Deno.env.get('PORT') ?? '8080', 10)
 
 export { PORT }

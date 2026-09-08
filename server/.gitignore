@@ -1,6 +1,2 @@
-node_modules
-dist
-.vscode
-npm-debug.log
 .env
 .DS_Store

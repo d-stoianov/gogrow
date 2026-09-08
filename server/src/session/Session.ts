@@ -1,5 +1,4 @@
-import { Player } from '@/player/Player'
-import { v4 as uuidv4 } from 'uuid'
+import { Player } from '@/player/Player.ts'
 
 enum SessionStatus {
     ACTIVE,
@@ -15,7 +14,7 @@ class Session {
     private status: SessionStatus = SessionStatus.WAITING_FOR_PLAYERS
 
     constructor(size = 2, creator: Player, name: string) {
-        this.id = uuidv4()
+        this.id = crypto.randomUUID()
         this.size = size
         this.name = name
 
@@ -43,17 +42,24 @@ class Session {
             throw new Error('Session is full')
         }
         this.players.push(player)
+        this.status = this.isFull
+            ? SessionStatus.ACTIVE
+            : SessionStatus.WAITING_FOR_PLAYERS
     }
 
-    public leaveSession(playerId: string) {
-        const indexToRemove = this.players.findIndex((p) => p.id === playerId)
+    public leaveSession(playerId: string): boolean {
+        const index = this.players.findIndex((p) => p.id === playerId)
+        if (index === -1) {
+            return false
+        }
 
-        // mutate players array
         this.players = [
-            ...this.players.slice(0, indexToRemove),
-            ...this.players.slice(indexToRemove + 1),
+            ...this.players.slice(0, index),
+            ...this.players.slice(index + 1),
         ]
+        this.status = SessionStatus.WAITING_FOR_PLAYERS
+        return true
     }
 }
 
-export { Session }
+export { Session, SessionStatus }

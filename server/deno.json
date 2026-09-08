@@ -1,0 +1,31 @@
+{
+    "name": "gogrow-server",
+    "version": "1.0.0",
+    "exports": "./src/app.ts",
+    "tasks": {
+        "dev": "deno run --watch --env-file --allow-env=PORT --allow-net src/app.ts",
+        "start": "deno run --allow-env=PORT --allow-net src/app.ts",
+        "check": "deno check src/app.ts",
+        "lint": "deno lint",
+        "fmt": "deno fmt"
+    },
+    "imports": {
+        "@/": "./src/"
+    },
+    "compilerOptions": {
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitOverride": true
+    },
+    "fmt": {
+        "indentWidth": 4,
+        "singleQuote": true,
+        "semiColons": false,
+        "lineWidth": 80
+    },
+    "lint": {
+        "rules": {
+            "tags": ["recommended"]
+        }
+    }
+}
